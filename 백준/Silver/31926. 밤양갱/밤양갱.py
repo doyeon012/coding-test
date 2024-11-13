@@ -1,3 +1,9 @@
+
+import sys
+input = sys.stdin.read
+n = int(input().strip())
+
+
 def min_time_to_create_song(n):
     # 초기값 설정
     ans = 10  # n이 1일 때 기본적으로 필요한 시간
@@ -10,13 +16,7 @@ def min_time_to_create_song(n):
     
     return ans
 
-def main():
-    import sys
-    input = sys.stdin.read
-    n = int(input().strip())
-    
-    result = min_time_to_create_song(n)
-    print(result)
 
-if __name__ == "__main__":
-    main()
+result = min_time_to_create_song(n)
+print(result)
+    
