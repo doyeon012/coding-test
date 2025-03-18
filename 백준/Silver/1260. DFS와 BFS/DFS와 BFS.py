@@ -1,39 +1,50 @@
 from collections import deque
 
+
 N, M, V = map(int, input().split())
-graph = [[False] * (N + 1) for _ in range(N + 1)]
 
-for i in range(M):
-    a, b = map(int, input().split())
-    graph[a][b] = 1
-    graph[b][a] = 1
+n_list = [[] for _ in range(N + 1)]
+arrr = []
 
-visited1 = [False] * (N + 1)
-visited2 = [False] * (N + 1)
+for _ in range(M):
+  a, b = map(int, input().split())
+  n_list[a].append(b)
+  n_list[b].append(a)
 
-def dfs(v):
-    visited1[v] = True
-    print(v, end=" ")
-    
-    for i in range(1, N + 1):
-        if not visited1[i] and graph[v][i] == 1:
-          dfs(i)
 
-def bfs(v):
-  q = deque([v])
-  visited2[v] = True
+for nodes in n_list:
+  nodes.sort()
+
+arrr = []
+visited = [False for _ in range(N + 1)]
+def dfs(V):
+
+  visited[V] = True
+  arrr.append(V)
+  
+  for n_node in n_list[V]:
+    if not visited[n_node]:
+      dfs(n_node)  
+      
+dfs(V)
+print( ' '.join(map(str, arrr)))
+
+visited = [False for _ in range(N + 1)]
+
+def bfs(V):
+  result = []
+  q = deque([V])
+  visited[V] = True
   
   while q:
+    node = q.popleft()
+    result.append(node)
     
-    v = q.popleft()
-    print(v, end=" ")
-    
-    for i in range(1, N + 1):
-      if not visited2[i] and graph[v][i] == 1:
-        q.append(i)
-        visited2[i] = True
+    for n_node in n_list[node]:
+      if not visited[n_node]:
+        visited[n_node] = True
+        q.append(n_node)
+  return result
 
 
-dfs(V)
-print()
-bfs(V)
+print(' '.join(map(str, bfs(V))))
