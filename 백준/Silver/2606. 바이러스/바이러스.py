@@ -1,39 +1,32 @@
-# 연결 요소의 개수
 from collections import deque
-import sys
-sys.setrecursionlimit(10**6) # 깊이 제한 방지.
 
-#입력 받고, graph 영역을 임의로 2차원 배열을 선언한다.
-n = int(sys.stdin.readline())
-m = int(sys.stdin.readline())
-graph = [[] for _ in range(n+1)]
-visited = [0] * (n + 1)
+N = int(input())
+P = int(input())
 
-#그래프 형식으로 간선들을 연결해준다. 간선들의 인접 정점들이 저장된다.
-for _ in range(m):
-    u, v = map(int, sys.stdin.readline().split())
-    graph[u].append(v)
-    graph[v].append(u)
-
-#dfs로 구현
-def dfs(v):
-    visited[v] = 1
-    # 해당 정점에 append로 들어간 인접 정점을 호출합니다. 
-    for i in graph[v]:
-        if visited[i] == 0:
-            dfs(i) #방문 안했으면 재귀로 호출해요.
+n_list = [[] for _ in range(N + 1)]
 
 
-# #bfs로 구현    
-# queue = deque([1])
-# while queue:
-#     v = queue.popleft()
-#     for i in graph[v]:
-#         if not visited[i]:
-#             queue.append(i)
-#             visited[i] = True
+for _ in range(P):
+  a, b = map(int, input().split())
+  n_list[a].append(b)
+  n_list[b].append(a)
 
 
-dfs(1)        
-print(sum(visited)-1) # 1번 컴퓨터 본인은 제외.
-#bfs로 할거면 dfs 주석처리하고 bfs 주석 풀면 된다. 동일 메커니즘이어서 가능.
+def bfs(start):
+  deq = deque([start])
+  visited[start] = True
+  result_count = 0
+  
+  while deq:
+    node = deq.popleft()
+    
+    for n_node in n_list[node]:
+      if not visited[n_node]:
+        visited[n_node] = True
+        deq.append(n_node)
+        result_count += 1
+  return result_count
+        
+
+visited = [False for _ in range(N + 1)]
+print(bfs(1))
